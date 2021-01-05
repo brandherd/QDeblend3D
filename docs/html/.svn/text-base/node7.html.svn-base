@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Background</TITLE>
+<META NAME="description" CONTENT="Background">
+<META NAME="keywords" CONTENT="Manual_v012_online">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="Manual_v012_online.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html121"
+  HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html119"
+  HREF="node6.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html113"
+  HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html122"
+  HREF="node8.html">Basics of the algorithm</A>
+<B> Up:</B> <A NAME="tex2html120"
+  HREF="node6.html">The Deblending Algorithm</A>
+<B> Previous:</B> <A NAME="tex2html114"
+  HREF="node6.html">The Deblending Algorithm</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Background</A>
+</H2>
+For the study of QSO host galaxies, 2D analytic modelling of broad-band photometric observations with dedicated software packages, such as <TT>GALFIT</TT> (<A NAME="tex2html123"
+  HREF="node27.html#Peng:2002">Peng et&nbsp;al., 2002</A>; <A NAME="tex2html124"
+  HREF="node27.html#Peng:2010">Peng et&nbsp;al., 2010</A>) or <TT>GIM2D</TT> (<A
+ HREF="node27.html#Simard:2002">Simard et&nbsp;al., 2002</A>), has enabled us to properly deblend the QSO and host galaxy emission to infer their properties independently. However, spectroscopic observation are required to gain further insight into the properties and distribution of the ISM, dust content, kinematics, element abundances, etc. Techniques to deblend the QSO and host galaxy contribution in longslit spectra have already been developed (<A NAME="tex2html125"
+  HREF="node27.html#Letawe:2007">Letawe et&nbsp;al., 2007</A>; <A NAME="tex2html126"
+  HREF="node27.html#Jahnke:2007">Jahnke et&nbsp;al., 2007</A>), but longslit spectroscopy can only cover a certain part of the host galaxy. In order to get a more complete picture, integral field units (IFUs) offer exciting new perspectives but also require the development of new techniques to cope with the data.
+
+<P>
+<BR><HR>
+<ADDRESS>
+Bernd Husemann
+2011-04-07
+</ADDRESS>
+</BODY>
+</HTML>

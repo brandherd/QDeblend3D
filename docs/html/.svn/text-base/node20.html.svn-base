@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Limit Control</TITLE>
+<META NAME="description" CONTENT="Limit Control">
+<META NAME="keywords" CONTENT="Manual_v012_online">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="Manual_v012_online.css">
+
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="node18.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html268"
+  HREF="node21.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html266"
+  HREF="node18.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html262"
+  HREF="node19.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html269"
+  HREF="node21.html">Deblending Control Widget</A>
+<B> Up:</B> <A NAME="tex2html267"
+  HREF="node18.html">Cube Viewer Widget</A>
+<B> Previous:</B> <A NAME="tex2html263"
+  HREF="node19.html">Mouse Modes</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043200000000000000">
+Limit Control</A>
+</H3>
+Both the upper and lower limits for the <TT>Spaxel</TT> and <TT>Spectrum Widgets</TT> can be set individually. If Auto is checked, the upper and lower limits are determined from the maximum and minimum values in the displayed range. The current values are always shown in the <TT>Max</TT> and <TT>Min</TT> input boxes. Please uncheck the <TT>Auto</TT> box and change the value in the <TT>Max</TT> or <TT>Min</TT> boxes to your desired values as float numbers. The Widget will be immediately updated.
+
+<P>
+<BR><HR>
+<ADDRESS>
+Bernd Husemann
+2011-04-07
+</ADDRESS>
+</BODY>
+</HTML>

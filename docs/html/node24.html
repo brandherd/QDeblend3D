@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Method Control</TITLE>
+<META NAME="description" CONTENT="Method Control">
+<META NAME="keywords" CONTENT="Manual_v012_online">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="Manual_v012_online.css">
+
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node21.html">
+<LINK REL="next" HREF="node25.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html307"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html305"
+  HREF="node21.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html301"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html308"
+  HREF="node25.html">Conditions of use</A>
+<B> Up:</B> <A NAME="tex2html306"
+  HREF="node21.html">Deblending Control Widget</A>
+<B> Previous:</B> <A NAME="tex2html302"
+  HREF="node23.html">Select Spectral Regions</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00044300000000000000">
+Method Control</A>
+</H3>
+ The user can set a few parameters that control how the iterative deblending algorithm will correct for the host galaxy contamination of the QSO spectrum. So far four modes are available
+<DL>
+<DT><STRONG><TT>None:</TT></STRONG></DT>
+<DD>This means that the QSO spectrum <I>will not be decontaminated</I> and taken as the co-added spectrum of the selected QSO spatial region. Thus, only one iteration will be performed.
+
+<P>
+</DD>
+<DT><STRONG><TT>Constant SFB:</TT></STRONG></DT>
+<DD>In this correction mode it will be assumed that the surface brightness (SFB) of the host emission in the selected spatial region is locally constant and equal to the host SFB within the area of the selected QSO spatial region. Thus, the extracted host spectrum will be scaled in each iteration to the area covered by the QSO spatial region. This mode is particularly usefull if no a-prior information on the host galaxy light distribution are available.
+
+<P>
+</DD>
+<DT><STRONG><TT>Manual factor:</TT></STRONG></DT>
+<DD>This mode is meant to study how different scaling factors affect the deblending process since the scale factor will in most cases not measurable from the data itself and needs to be approximated. The user can put in different scale factors manually to get a feeling of what is happening.
+
+<P>
+</DD>
+<DT><STRONG><TT>Host SFB model:</TT></STRONG></DT>
+<DD>The most sophisticated mode. It assumes that a-priori knowledge of the host galaxy SFB distribution is available, for example from high-resolution imaging with the Hubble Space Telescope. In that case, the user need to provide the structural components of the estimated host model. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:hostmodel"></A><A NAME="324"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 9:</STRONG>
+The host model dialog</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER"> <IMG
+ WIDTH="634" HEIGHT="263" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.png"
+ ALT="\includegraphics[width=14cm]{WidgetHostModel.eps}">
+ </DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+The corresponding dialog that opens after clicking on the <TT>Edit Host Model</TT> button is shown in Figure&nbsp;<A HREF="#fig:hostmodel">9</A>. The user can add, change or delete structural components which are based on the two-dimensional S&#233;rsic SFB profile. The required parameters for the host model components are the magnitude, the distance in <IMG
+ WIDTH="15" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$x$"> and <IMG
+ WIDTH="15" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$y$"> direction to the QSO centre, the effective radius <IMG
+ WIDTH="20" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.png"
+ ALT="$r_\mathrm{e}$"> in units of spaxels, the S&#233;rsic index <IMG
+ WIDTH="16" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.png"
+ ALT="$n$">, the ellipticity and the position angle PA in the GALFIT convention. The resulting SFB model is displayed in the widget on the right with a logarithmic SFB scaling. 
+
+<P>
+During the deblending process the host model will be convolved with the recovered PSF of the observation. Afterwards the difference in SFB of the selected host spatial region and the selected QSO spatial region will be measured and host galaxy spectrum will be scaled accordingly before it is subtracted from the QSO spectrum.
+</DD>
+</DL>
+Additionally, the user can set which quantity will be used to define the strength of the broad line within the selected wavelength range. Available options in <TT>Region Use</TT> are the <B>median</B>, the <B>mean</B> and the <B>sum</B>. 
+
+<P>
+The QSO-host deblending  should usually not be performed over the entire field of view, since the deblending process will decrease the S/N of individual spaxel spectra. Thus, it might be desirable to restrict the actual deblending to an area within a given radius around the QSO centre. In that case the user should select the <TT>Radius</TT> box and enter the desired radius in units of spaxels.
+
+<P>
+If all required parameters in the <TT>Deblending Control Widget</TT> have been set satisfactory the user can start the deblending process with the <TT>Start Deblending</TT> button in the Widget or from the <TT>Start Menu</TT> item.
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $\fbox{\textbf{Please check, that the QSO centre has been set correctly!}}$
+ -->
+<IMG
+ WIDTH="558" HEIGHT="46" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="\fbox{\textbf{Please check, that the QSO centre has been set correctly!}}">
+</DIV>
+<BR>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html307"
+  HREF="node25.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html305"
+  HREF="node21.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html301"
+  HREF="node23.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html308"
+  HREF="node25.html">Conditions of use</A>
+<B> Up:</B> <A NAME="tex2html306"
+  HREF="node21.html">Deblending Control Widget</A>
+<B> Previous:</B> <A NAME="tex2html302"
+  HREF="node23.html">Select Spectral Regions</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Bernd Husemann
+2011-04-07
+</ADDRESS>
+</BODY>
+</HTML>

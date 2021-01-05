@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Conditions of use</TITLE>
+<META NAME="description" CONTENT="Conditions of use">
+<META NAME="keywords" CONTENT="Manual_v012_online">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="Manual_v012_online.css">
+
+<LINK REL="next" HREF="node26.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="Manual_v012_online.html">
+<LINK REL="next" HREF="node26.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html317"
+  HREF="node26.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="file:/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html315"
+  HREF="Manual_v012_online.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="file:/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html309"
+  HREF="node24.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="file:/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html318"
+  HREF="node26.html">Acknowlegdements</A>
+<B> Up:</B> <A NAME="tex2html316"
+  HREF="Manual_v012_online.html">Manual_v012_online</A>
+<B> Previous:</B> <A NAME="tex2html310"
+  HREF="node24.html">Method Control</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000">
+Conditions of use</A>
+</H1>
+<TT>QDeblend<!-- MATH
+ ${}^{\mathrm{3D}}$
+ -->
+<IMG
+ WIDTH="23" HEIGHT="21" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="${}^{\mathrm {3D}}$"></TT> is free to use on under GNU GPL licence. No co-authorship in papers is required if you used this program for the data anaylsis. However, we would like to ask you to cite the following two papers (to be submitted) where initial results using <TT>QDeblend<!-- MATH
+ ${}^{\mathrm{3D}}$
+ -->
+<IMG
+ WIDTH="23" HEIGHT="21" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="${}^{\mathrm {3D}}$"></TT> are presented.
+<BR>
+<P>
+<B>Husemann, B., Wisotzki, L., S&#225;nchez, S.F., &amp; Janke, K., ``The properties of extended emission-line regions around low-redshift QSOs and the lack of high-velocity AGN outflows'', 2011, A&amp;A, to be submitted</B>
+<BR>
+<P>
+<B>Husemann, B., Nugroho, D., Jahnke, K., Wisotzki, L., S&#225;nchez, S.F.,Kupko, D.,&amp; Schramm, M., ``Integral field spectroscopy of nearby QSOs: Emission-line diagnostics, resolved gas-phase metallicities &amp; the NLR size-luminosity relation'', 2011, A&amp;A, to be submitted</B>
+<BR>
+<P>
+Please check ADS when those papers are published at least on the preprint server.
+<BR>
+<P>
+On the other hand, we welcome any suggestions for improvements, requests for additional features or reporting bugs to be fixed. Please contact the author by eMail (bhusemann@aip.de) or use the website at sourceforge to share your comments.
+
+<P>
+<BR><HR>
+<ADDRESS>
+Bernd Husemann
+2011-04-07
+</ADDRESS>
+</BODY>
+</HTML>
