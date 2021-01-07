@@ -8,6 +8,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from QDeblend.widgets.matplotlibspecwidget import MatplotlibSpecWidget
+from QDeblend.widgets.matplotlibimgwidget import MatplotlibImgWidget
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -929,6 +931,3 @@ class Ui_MainWindow(object):
         self.actionMonte_Carlo_run.setToolTip(QtGui.QApplication.translate("MainWindow", "Monte Carlo run", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSetQSOcentre.setText(QtGui.QApplication.translate("MainWindow", "Set &QSO centre", None, QtGui.QApplication.UnicodeUTF8))
         self.actionManual.setText(QtGui.QApplication.translate("MainWindow", "Online Manual", None, QtGui.QApplication.UnicodeUTF8))
-
-from matplotlibspecwidget import MatplotlibSpecWidget
-from matplotlibimgwidget import MatplotlibImgWidget

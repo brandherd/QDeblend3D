@@ -16,15 +16,11 @@
 #You should have received a copy of the GNU General Public License
 #along with QDeblend3D.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-import numpy, math
-try:
-    import pyfits
-except:
-    from astropy.io import fits as pyfits
+import numpy
+import math
+from astropy.io import fits as pyfits
 from scipy import ndimage
-from own_exceptions import *
+from QDeblend.process.own_exceptions import *
 
 __version__ = '0.1.2'
 

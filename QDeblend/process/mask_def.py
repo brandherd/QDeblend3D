@@ -18,7 +18,7 @@
 
 import numpy
 import matplotlib
-from own_exceptions import *
+from QDeblend.process.own_exceptions import *
 from PyQt4.QtCore import *
 
 __version__ = '0.1.2'

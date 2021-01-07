@@ -16,10 +16,9 @@
 #You should have received a copy of the GNU General Public License
 #along with QDeblend3D.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-import ui_dlgColorProperties
-import pickle, os
+from QDeblend.ui import ui_dlgColorProperties
+import pickle
+import os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 

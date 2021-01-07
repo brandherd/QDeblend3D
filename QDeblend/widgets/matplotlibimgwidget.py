@@ -16,12 +16,16 @@
 #You should have received a copy of the GNU General Public License
 #along with QDeblend3D.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import mask_def, own_classes
-import sys, os, random
-import matplotlib, pylab, numpy
+import sys
+import os
+import random
+import matplotlib
+import numpy
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
+from QDeblend.process import mask_def
+import color_schema
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -40,7 +44,7 @@ class MatplotlibImgWidget(FigureCanvas):
         self.fig = Figure(figsize=(width, height), dpi=dpi, facecolor=bgcolor, edgecolor=bgcolor)
         self.axes = self.fig.add_axes([0.05, 0.05, 0.9, 0.9])
         # We want the axes cleared every time plot() is called
-        self.colorScheme = own_classes.colorSchemeSpax()
+        self.colorScheme = color_schema.colorSchemeSpax()
         self.axes.hold(False)
         self.axes.set_xticks([])
         self.axes.set_yticks([])

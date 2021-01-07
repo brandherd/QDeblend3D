@@ -19,11 +19,35 @@
 import os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from own_exceptions import *
-import ui_dlgMonteCarlo
+from QDeblend.process.own_exceptions import *
+from QDeblend.ui import ui_dlgMonteCarlo
 import dlgEditHostModel
 
 __version__ = '0.1.2'
+
+class setMonteCarlo(object):
+    def __init__(self, dir='', var_name='', prefix='', simulations=0, width_random=0.0, wavelength_start=None,
+                 wavelength_end=None):
+        self.dir = dir
+        self.var_name = var_name
+        self.prefix = prefix
+        self.simulations = simulations
+        self.width_random = width_random
+        self.wavelength_start = wavelength_start
+        self.wavelength_end = wavelength_end
+
+    def getSettings(self):
+        return [self.dir, self.var_name, self.prefix, self.simulations, self.width_random, self.wavelength_start,
+                self.wavelength_end]
+
+    def loadSettings(self, settings):
+        self.dir = settings[0]
+        self.var_name = settings[1]
+        self.prefix = settings[2]
+        self.simulations = settings[3]
+        self.width_random = settings[4]
+        self.wavelength_start = settings[5]
+        self.wavelength_end = settings[6]
 
 class dlgMonteCarlo(QDialog, ui_dlgMonteCarlo.Ui_dlgMonteCarlo):
     def __init__(self, parent, setMonte):

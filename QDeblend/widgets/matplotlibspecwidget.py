@@ -16,16 +16,15 @@
 #You should have received a copy of the GNU General Public License
 #along with QDeblend3D.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys, os, random
+import sys
+import os
+import random
 import numpy
-import mask_def
-import own_classes
 import matplotlib
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-
-
-from numpy import arange, sin, pi
+from QDeblend.process import mask_def
+import color_schema
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -47,7 +46,7 @@ class MatplotlibSpecWidget(FigureCanvas):
         self.axes.hold(False)
         #self.axes.set_xticklabels(self.axes.get_xticklabels(), fontsize=10)
         self.axes.set_xlabel('wavelength [$\AA$]',  fontsize=12)
-        self.colorScheme = own_classes.colorSchemeSpec()
+        self.colorScheme = color_schema.colorSchemeSpec()
         self.spec1_vis = False
         self.spec2_vis = False
         self.viewLine_vis = False

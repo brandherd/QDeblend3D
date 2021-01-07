@@ -117,4 +117,4 @@ class Ui_dlgHostModel(object):
         self.bChangeModel.setText(QtGui.QApplication.translate("dlgHostModel", "&Change Model", None, QtGui.QApplication.UnicodeUTF8))
         self.bDeleteModel.setText(QtGui.QApplication.translate("dlgHostModel", "&Delete Model", None, QtGui.QApplication.UnicodeUTF8))
 
-from matplotlibimgwidget import MatplotlibImgWidget
+

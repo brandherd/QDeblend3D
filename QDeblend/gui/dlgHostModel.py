@@ -16,8 +16,7 @@
 #You should have received a copy of the GNU General Public License
 #along with QDeblend3D.  If not, see <http://www.gnu.org/licenses/>.
 
-
-import ui_dlgHostModel
+from QDeblend.ui import ui_dlgHostModel
 import dlgEditHostModel
 import copy
 import numpy
@@ -26,6 +25,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 __version__ = '0.1.2'
+
 
 class dlgHostModel(QDialog, ui_dlgHostModel.Ui_dlgHostModel):
     def __init__(self, hostContainer, parent=None):

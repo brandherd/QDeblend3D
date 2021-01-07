@@ -1,8 +1,7 @@
-import ui_dlgSaveCubes
 import os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-
+from QDeblend.ui import ui_dlgSaveCubes
 
 __version__='0.1.2'
 

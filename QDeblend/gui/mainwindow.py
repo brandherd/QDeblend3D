@@ -21,18 +21,15 @@ import os
 import pickle
 import numpy
 import math
-try:
-    import pyfits
-except:
-    from astropy.io import fits as pyfits
+from astropy.io import fits as pyfits
 import matplotlib
 matplotlib.use('Qt4Agg')
-import IFU_cube
-from own_exceptions import *
-import own_classes
+from QDeblend.process import IFU_cube
+from QDeblend.widgets import widgets
+from QDeblend.widgets import color_schema
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import ui_mainwindow
+from QDeblend.ui import ui_mainwindow
 import dlgColorProperties
 import dlgSaveCubes
 import dlgMonteCarlo
@@ -85,18 +82,18 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         self.inputCube = IFU_cube.IFUcube()
         self.EELRcube = IFU_cube.IFUcube()
         self.QSOcube = IFU_cube.IFUcube()
-        self.LWSpec = own_classes.limitWidget(self.lineEditMinSpec, self.lineEditMaxSpec, self.checkBoxAutoSpec)
-        self.LWImg = own_classes.limitWidget(self.lineEditMinImg, self.lineEditMaxImg, self.checkBoxAutoImg)
+        self.LWSpec = widgets.limitWidget(self.lineEditMinSpec, self.lineEditMaxSpec, self.checkBoxAutoSpec)
+        self.LWImg = widgets.limitWidget(self.lineEditMinImg, self.lineEditMaxImg, self.checkBoxAutoImg)
         self.specWidg = self.bothSpectrumWidget
         self.specWidg.setLimitsWidget(self.LWSpec)
         self.spaxWidg1 = self.inputSpaxelWidget
         self.spaxWidg1.setLimitsWidget(self.LWImg)
         self.spaxWidg2 = self.outputSpaxelWidget
         self.spaxWidg2.setLimitsWidget(self.LWImg)
-        self.regionsSpaxWidg = own_classes.regionsSpaxWidget(self.spinBoxQSORegionSize, self.spinBoxEELRRegionWidth, self.radioButtonRegionRegular, self.radioButtonRegionManual, self.checkBoxDisplayMask, self.buttonQSOSaveMask, self.buttonQSOChangeMask, self.buttonEELRSaveMask, self.buttonEELRChangeMask, own_classes.colorsQSOSpax(), parent=self)
-        self.regionsSpecWidg = own_classes.regionsSpecWidget(self.comboBoxRegions, self.buttonSaveBroad1, self.buttonSaveBroad2, self.buttonChangeBroad1, self.buttonChangeBroad2, self.buttonSaveCont1, self.buttonSaveCont2, self.buttonChangeCont1, self.buttonChangeCont2, self.checkBoxInterpCont, self.checkBoxShowRegion,  own_classes.colorsQSOSpec())
-        self.modeWidg = own_classes.modeWidget(self.comboBoxCorrMode, self.lineEditSFBFactor, self.pushButtonEditHostModel, self.spinBoxIterations, self.comboBoxRegionMeasure, self.radioButtonRadius, self.lineEditRadius)
-        self.MonteSettings = own_classes.setMonteCarlo()
+        self.regionsSpaxWidg = widgets.regionsSpaxWidget(self.spinBoxQSORegionSize, self.spinBoxEELRRegionWidth, self.radioButtonRegionRegular, self.radioButtonRegionManual, self.checkBoxDisplayMask, self.buttonQSOSaveMask, self.buttonQSOChangeMask, self.buttonEELRSaveMask, self.buttonEELRChangeMask, color_schema.colorsQSOSpax(), parent=self)
+        self.regionsSpecWidg = widgets.regionsSpecWidget(self.comboBoxRegions, self.buttonSaveBroad1, self.buttonSaveBroad2, self.buttonChangeBroad1, self.buttonChangeBroad2, self.buttonSaveCont1, self.buttonSaveCont2, self.buttonChangeCont1, self.buttonChangeCont2, self.checkBoxInterpCont, self.checkBoxShowRegion,  color_schema.colorsQSOSpec())
+        self.modeWidg = widgets.modeWidget(self.comboBoxCorrMode, self.lineEditSFBFactor, self.pushButtonEditHostModel, self.spinBoxIterations, self.comboBoxRegionMeasure, self.radioButtonRadius, self.lineEditRadius)
+        self.MonteSettings = dlgMonteCarlo.setMonteCarlo()
         
         self.connect(self.actionSetColours, SIGNAL("triggered()"), self.setColourScheme)
         self.connect(self.actionSave_Configuration, SIGNAL("triggered()"), self.saveSession)
@@ -175,7 +172,7 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
                     pass
                 
                 ## Init Slider
-                self.cubeSlider = own_classes.sliderWidget(self.verticalSliderSlice, self.labelSlice, self.inputCube)
+                self.cubeSlider = widgets.sliderWidget(self.verticalSliderSlice, self.labelSlice, self.inputCube)
                 
                 ## Init first spectral image and init the selected Spaxel to 0,0
                 self.spaxWidg1.initImage(self.inputCube.dataCube[0,:,:])       
