@@ -34,10 +34,9 @@ import dlgColorProperties
 import dlgSaveCubes
 import dlgMonteCarlo
 import onlineHelp
+import QDeblend
 
-__version__ = '0.1.2'
-
-class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
+class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
     """
     Primary class of QDeblend3D initialising the main GUI, setup its components and controlling the user actions.
     
@@ -77,8 +76,6 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         super(MainWindow, self ).__init__(parent)
         self.setupUi(self)
         self.cubeinname=''
-  #     self.specColor='k'
-  #      self.eelrspecColor='b'
         self.inputCube = IFU_cube.IFUcube()
         self.EELRcube = IFU_cube.IFUcube()
         self.QSOcube = IFU_cube.IFUcube()
@@ -90,9 +87,34 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         self.spaxWidg1.setLimitsWidget(self.LWImg)
         self.spaxWidg2 = self.outputSpaxelWidget
         self.spaxWidg2.setLimitsWidget(self.LWImg)
-        self.regionsSpaxWidg = widgets.regionsSpaxWidget(self.spinBoxQSORegionSize, self.spinBoxEELRRegionWidth, self.radioButtonRegionRegular, self.radioButtonRegionManual, self.checkBoxDisplayMask, self.buttonQSOSaveMask, self.buttonQSOChangeMask, self.buttonEELRSaveMask, self.buttonEELRChangeMask, color_schema.colorsQSOSpax(), parent=self)
-        self.regionsSpecWidg = widgets.regionsSpecWidget(self.comboBoxRegions, self.buttonSaveBroad1, self.buttonSaveBroad2, self.buttonChangeBroad1, self.buttonChangeBroad2, self.buttonSaveCont1, self.buttonSaveCont2, self.buttonChangeCont1, self.buttonChangeCont2, self.checkBoxInterpCont, self.checkBoxShowRegion,  color_schema.colorsQSOSpec())
-        self.modeWidg = widgets.modeWidget(self.comboBoxCorrMode, self.lineEditSFBFactor, self.pushButtonEditHostModel, self.spinBoxIterations, self.comboBoxRegionMeasure, self.radioButtonRadius, self.lineEditRadius)
+        self.regionsSpaxWidg = widgets.regionsSpaxWidget(self.spinBoxQSORegionSize,
+                                                         self.spinBoxEELRRegionWidth,
+                                                         self.radioButtonRegionRegular,
+                                                         self.radioButtonRegionManual,
+                                                         self.checkBoxDisplayMask,
+                                                         self.buttonQSOSaveMask,
+                                                         self.buttonQSOChangeMask,
+                                                         self.buttonEELRSaveMask,
+                                                         self.buttonEELRChangeMask,
+                                                         color_schema.colorsQSOSpax(), parent=self)
+        self.regionsSpecWidg = widgets.regionsSpecWidget(self.comboBoxRegions,
+                                                         self.buttonSaveBroad1,
+                                                         self.buttonSaveBroad2,
+                                                         self.buttonChangeBroad1,
+                                                         self.buttonChangeBroad2,
+                                                         self.buttonSaveCont1,
+                                                         self.buttonSaveCont2,
+                                                         self.buttonChangeCont1,
+                                                         self.buttonChangeCont2,
+                                                         self.checkBoxInterpCont,
+                                                         self.checkBoxShowRegion,
+                                                         color_schema.colorsQSOSpec())
+        self.modeWidg = widgets.modeWidget(self.comboBoxCorrMode, self.lineEditSFBFactor,
+                                           self.pushButtonEditHostModel,
+                                           self.spinBoxIterations,
+                                           self.comboBoxRegionMeasure,
+                                           self.radioButtonRadius,
+                                           self.lineEditRadius)
         self.MonteSettings = dlgMonteCarlo.setMonteCarlo()
         
         self.connect(self.actionSetColours, SIGNAL("triggered()"), self.setColourScheme)
@@ -101,11 +123,9 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         self.connect(self.actionLoad_Cube, SIGNAL("triggered()"), self.OpenFile)
         self.connect(self.pushButtonSaveResults,  SIGNAL("clicked()"), self.saveCubes)
         self.connect(self.actionSave_Results,  SIGNAL("triggered()"), self.saveCubes)
-        
         self.connect(self.actionMonte_Carlo_run,  SIGNAL("triggered()"), self.startMonteCarlo)
-        
         self.connect(self.verticalSliderSlice, SIGNAL("valueChanged(int)"), self.changedSlider)
-        
+
         self.connect(self.spaxWidg1, SIGNAL("mouse_press_event"), self.spaxFigMousePress)
         self.connect(self.spaxWidg2, SIGNAL("mouse_press_event"), self.spaxFigMousePress)
         self.connect(self.spaxWidg1, SIGNAL("mouse_move_event"), self.spaxFigMouseMove)
@@ -115,11 +135,11 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         self.connect(self.specWidg, SIGNAL("mouse_press_event"), self.specFigMousePress)
         self.connect(self.specWidg, SIGNAL("mouse_move_event"), self.specFigMouseMove)
         self.connect(self.specWidg, SIGNAL("mouse_release_event"), self.specFigMouseRelease)
-        
+
         self.connect(self.radioButtonModeView, SIGNAL("clicked()"), self.changeMouseMode)
         self.connect(self.radioButtonModeZoom, SIGNAL("clicked()"), self.changeMouseMode)
         self.connect(self.radioButtonModeSelect, SIGNAL("clicked()"), self.changeMouseMode)
-        
+
         self.connect(self.radioButtonHost, SIGNAL("clicked()"), self.changeOutCube)
         self.connect(self.radioButtonQSO, SIGNAL("clicked()"), self.changeOutCube)
         
@@ -133,16 +153,17 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         self.connect(self.actionAbout, SIGNAL("triggered()"), self.about)
         
         if file!='':
-            if '.fits' in file or '.fit' in file:
+            if '.fits' in file or '.fit' in file or '.fits.gz' in file:
                 self.OpenFile(file)
             elif '.q3d' in file:
                 self.loadSession(file)
-        
+            else:
+                raise IOError('No correct file selected for import. Please review your selection.')
         
     def OpenFile(self, filename=''):
         if filename=='':
-            self.cubeinname = QFileDialog.getOpenFileName(self,
-     caption="Open IFU Cube", directory=os.getcwd(), filter="Fits Files (*.fit *.fits)")
+            self.cubeinname = QFileDialog.getOpenFileName(self, caption="Open IFU Cube", directory=os.getcwd(),
+                                                          filter="Fits Files (*.fit *.fits *fits.gz)")
         else:
             self.cubeinname=filename
         if self.cubeinname!='':
@@ -175,7 +196,7 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
                 self.cubeSlider = widgets.sliderWidget(self.verticalSliderSlice, self.labelSlice, self.inputCube)
                 
                 ## Init first spectral image and init the selected Spaxel to 0,0
-                self.spaxWidg1.initImage(self.inputCube.dataCube[0,:,:])       
+                self.spaxWidg1.initImage(self.inputCube.dataCube[0, :, :])
                 self.spaxWidg1.initShowSpax(0, 0, True)
                 self.spaxWidg1.initSpaxMask(False)
                 self.LWImg.setEnabled(True)
@@ -188,10 +209,9 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
                 self.regionsSpaxWidg.initLimits(self.inputCube)
                 self.regionsSpaxWidg.setupMasks(self.spaxWidg1)
                 self.regionsSpecWidg.setupMasks(self.specWidg)
-                
-                
+
                 ## Initialize spaxel spectrum and view line and set current xlimits of spectrum
-                self.specWidg.initSpec1(self.inputCube.wave,spec1=self.inputCube.dataCube[:,0,0])
+                self.specWidg.initSpec1(self.inputCube.wave, spec1=self.inputCube.dataCube[:, 0, 0])
                 self.specWidg.initViewLine(self.inputCube.wave[0])
                 self.specWidg.initSpecMask(waveLimit=None)
                 self.specWidg.setXLim((self.inputCube.wave[0], self.inputCube.wave[-1]))
@@ -213,15 +233,15 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
                 self.modeWidg.hostModel.setDim((self.inputCube.yDim, self.inputCube.xDim))
                 
             except IOError:
-                warning = QMessageBox.critical(self,'Fits File I/O Error', 'This file is not a 3D cube Fits file!')
+                warning = QMessageBox.critical(self,'Fits File I/O Error', 'This file is not a 3D cube fits file!')
 
     def saveCubes(self):
         dialog = dlgSaveCubes.dlgSaveCubes(self.QSOcube, self.EELRcube, parent=self)
         dialog.show()
         
     def saveSession(self):  
-        file_name = QFileDialog.getSaveFileName(self, 
-    caption="Save Session File", directory=os.getcwd(), filter="Q3D session (*.q3d)")
+        file_name = QFileDialog.getSaveFileName(self, caption="Save Session File", directory=os.getcwd(),
+                                                filter="Q3D session (*.q3d)")
         out1=self.modeWidg.getSettings()
         out2 = self.regionsSpecWidg.getSettings()
         out3 = self.regionsSpaxWidg.getSettings()
@@ -234,8 +254,8 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         
     def loadSession(self, file_name=''):
         if file_name=='':
-            file_name = QFileDialog.getOpenFileName(self,
-                caption="Open Session File", directory=os.getcwd(), filter="Q3D session (*.q3d)")
+            file_name = QFileDialog.getOpenFileName(self, caption="Open Session File", directory=os.getcwd(),
+                                                    filter="Q3D session (*.q3d)")
         if file_name!='':
             file = open(file_name, 'r')
             list = pickle.load(file)
@@ -247,63 +267,63 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
                 self.regionsSpaxWidg.loadSettings(list[4])
                 self.MonteSettings.loadSettings(list[5])
             else:
-                QMessageBox.critical(self, 'Error Message', 'Session file was stored with a incompatible QDeblend3D Version!\n Cannot load Session File...')
-                
-    
+                QMessageBox.critical(self, 'Error Message', 'Session file was stored with a incompatible '
+                                                            'QDeblend3D Version!\n Cannot load Session File...')
+
     def getSpaxPos(self, xdata, ydata):
         sx = math.floor(xdata+0.5)
-        if sx-xdata>0.5:
+        if sx-xdata > 0.5:
             sx+=1
-        sy = math.floor(ydata+0.5)
-        if sy-ydata>0.5:
+        sy = math.floor(ydata + 0.5)
+        if sy-ydata > 0.5:
             sy+=1
-        return sx, sy
+        return int(sx), int(sy)
         
-    def spaxFigMousePress(self,button,x,y,xdata,ydata):
+    def spaxFigMousePress(self, button, x, y, xdata, ydata):
         sender = self.sender()
         both = self.checkBoxModeBoth.isChecked()
-        if (not xdata==None) and (not ydata==None):
-            pos = self.getSpaxPos( xdata, ydata)
+        if (not xdata is None) and (not ydata is None):
+            pos = self.getSpaxPos(xdata, ydata)
             
-        if (button == 1) and self.radioButtonModeView.isChecked() and (not xdata==None) and (not ydata==None):
-            if both == True:
-                if self.inputCube.empty==False and self.EELRcube.empty==False:
-                    spec1 = self.inputCube.dataCube[:,pos[1],pos[0]]
-                    spec2 = self.displayOutCube.dataCube[:,pos[1],pos[0]]
-                    self.specWidg.updateSpec1(self.inputCube.wave,spec1=spec1, limits=False)
-                    self.specWidg.updateSpec2(self.displayOutCube.wave,spec2=spec2, limits=False)
+        if (button == 1) and self.radioButtonModeView.isChecked() and (not xdata is None) and (not ydata is None):
+            if both:
+                if not self.inputCube.empty and not self.EELRcube.empty:
+                    spec1 = self.inputCube.dataCube[:, int(pos[1]), int(pos[0])]
+                    spec2 = self.displayOutCube.dataCube[:, int(pos[1]), int(pos[0])]
+                    self.specWidg.updateSpec1(self.inputCube.wave, spec1=spec1, limits=False)
+                    self.specWidg.updateSpec2(self.displayOutCube.wave, spec2=spec2, limits=False)
                     min = numpy.min([numpy.min(spec1), numpy.min(spec2)])
                     max = numpy.max([numpy.max(spec1), numpy.max(spec2)])
                     auto = self.LWSpec.isAuto()
-                    if auto==True:
+                    if auto:
                         self.specWidg.setYLim(min, max)
                         self.LWSpec.setLimits(min, max)
                     self.spaxWidg1.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
                     self.spaxWidg2.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
                 
-            elif  sender == self.spaxWidg1 and self.inputCube.empty==False:
-                spec1 = self.inputCube.dataCube[:,pos[1],pos[0]]
-                self.specWidg.updateSpec1(self.inputCube.wave,spec1=spec1)
-                if self.specWidg.spec2!=None and self.specWidg.spec2_vis==True:
+            elif  sender == self.spaxWidg1 and not self.inputCube.empty:
+                spec1 = self.inputCube.dataCube[:, pos[1], pos[0]]
+                self.specWidg.updateSpec1(self.inputCube.wave, spec1=spec1)
+                if self.specWidg.spec2 is not None and self.specWidg.spec2_vis:
                     self.specWidg.setVisibleSpec2(False)
                 self.spaxWidg1.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
                 
-            elif  sender == self.spaxWidg2 and self.EELRcube.empty==False:
-                spec2 = self.displayOutCube.dataCube[:,pos[1],pos[0]]
-                self.specWidg.updateSpec2(self.displayOutCube.wave,spec2=spec2)
-                if self.specWidg.spec1!=None and self.specWidg.spec1_vis==True:
+            elif  sender == self.spaxWidg2 and not self.EELRcube.empty:
+                spec2 = self.displayOutCube.dataCube[:, pos[1], pos[0]]
+                self.specWidg.updateSpec2(self.displayOutCube.wave, spec2=spec2)
+                if self.specWidg.spec1 is not None and self.specWidg.spec1_vis:
                     self.specWidg.setVisibleSpec1(False)
                 self.spaxWidg2.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
             
-        if (button == 1) and self.radioButtonModeZoom.isChecked()==True  and (not xdata==None) and (not ydata==None): 
-            if both == True:
+        if (button == 1) and self.radioButtonModeZoom.isChecked()  and (xdata is not None) and (ydata is not None):
+            if both:
                 self.spaxWidg1.initZoomBox(pos[0], pos[1])
                 self.spaxWidg2.initZoomBox(pos[0], pos[1])
             else:    
                 sender.initZoomBox(pos[0], pos[1])
 
-        if (button == 1) and self.radioButtonModeSelect.isChecked()==True  and (not xdata==None) and (not ydata==None): 
-            if sender == self.spaxWidg1 and self.inputCube.empty==False:
+        if (button == 1) and self.radioButtonModeSelect.isChecked() and (xdata is not None) and (ydata is not None):
+            if sender == self.spaxWidg1 and not self.inputCube.empty:
                 if self.spaxWidg1.selectSpaxMask.isMasked((pos[1], pos[0])):
                     self.spaxWidg1.selectSpaxMask.unmaskPixel((pos[1], pos[0])) 
                 else:
@@ -311,166 +331,164 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
                 spec = self.inputCube.extractSpecMask(self.spaxWidg1.selectSpaxMask.mask.mask, mode='sum')
                 self.specWidg.updateSpec1(self.inputCube.wave, spec1=spec)
      
-        if (button == 3) and self.radioButtonModeSelect.isChecked()==True:
-            if sender == self.spaxWidg1 and self.inputCube.empty==False:
+        if (button == 3) and self.radioButtonModeSelect.isChecked():
+            if sender == self.spaxWidg1 and not self.inputCube.empty:
                 self.spaxWidg1.selectSpaxMask.emptyMask()
                 spec = numpy.zeros(self.inputCube.wDim, dtype=numpy.float32)
                 self.specWidg.updateSpec1(self.inputCube.wave, spec1=spec)
         
-    def spaxFigMouseMove(self,button,x,y,xdata,ydata):
+    def spaxFigMouseMove(self, button, x, y, xdata, ydata):
         sender = self.sender()
         both = self.checkBoxModeBoth.isChecked()
         
-        if (not xdata==None) and (not ydata==None):
-            pos = self.getSpaxPos( xdata, ydata)
+        if (xdata is not None) and (ydata is not None):
+            pos = self.getSpaxPos(xdata, ydata)
         
-        if (button == 1) and self.radioButtonModeView.isChecked() and (not xdata==None) and (not ydata==None): 
-            if both == True:
-                if self.inputCube.empty==False and self.EELRcube.empty==False:
-                    spec1 = self.inputCube.dataCube[:,pos[1],pos[0]]
-                    spec2 = self.displayOutCube.dataCube[:,pos[1],pos[0]]
-                    self.specWidg.updateSpec1(self.inputCube.wave,spec1=spec1)
-                    self.specWidg.updateSpec2(self.displayOutCube.wave,spec2=spec2)
+        if (button == 1) and self.radioButtonModeView.isChecked() and (xdata is not None) and (not ydata is not None):
+            if both:
+                if not self.inputCube.empty and not self.EELRcube.empty:
+                    spec1 = self.inputCube.dataCube[:, int(pos[1]), int(pos[0])]
+                    spec2 = self.displayOutCube.dataCube[:, int(pos[1]), int(pos[0])]
+                    self.specWidg.updateSpec1(self.inputCube.wave, spec1=spec1)
+                    self.specWidg.updateSpec2(self.displayOutCube.wave, spec2=spec2)
                     min = numpy.min([numpy.min(spec1), numpy.min(spec2)])
                     max = numpy.max([numpy.max(spec1), numpy.max(spec2)])
                     auto = self.LWSpec.isAuto()
-                    if auto==True:
+                    if auto:
                         self.specWidg.setYLim(min, max)
                         self.LWSpec.setLimits(min, max)
                     self.spaxWidg1.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
                     self.spaxWidg2.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
                 
-            elif  sender == self.spaxWidg1 and self.inputCube.empty==False:
-                spec1 = self.inputCube.dataCube[:,pos[1],pos[0]]
-                self.specWidg.updateSpec1(self.inputCube.wave,spec1=spec1)
+            elif  sender == self.spaxWidg1 and not self.inputCube.empty:
+                spec1 = self.inputCube.dataCube[:, int(pos[1]), int(pos[0])]
+                self.specWidg.updateSpec1(self.inputCube.wave, spec1=spec1)
                 self.spaxWidg1.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
                 
-            elif  sender == self.spaxWidg2 and self.EELRcube.empty==False:
-                spec2 = self.displayOutCube.dataCube[:,pos[1],pos[0]]
-                self.specWidg.updateSpec2(self.displayOutCube.wave,spec2=spec2)
+            elif  sender == self.spaxWidg2 and not self.EELRcube.empty:
+                spec2 = self.displayOutCube.dataCube[:, int(pos[1]), int(pos[0])]
+                self.specWidg.updateSpec2(self.displayOutCube.wave, spec2=spec2)
                 self.spaxWidg2.moveSelectSpax(pos[0]-0.5, pos[1]-0.5)
             
-        if (button == 1) and self.radioButtonModeZoom.isChecked()==True  and (not xdata==None) and (not ydata==None):
-            if both == True:
+        if (button == 1) and self.radioButtonModeZoom.isChecked() and (xdata is not None) and (ydata is not None):
+            if both:
                 self.spaxWidg1.resizeZoomBox(pos[0], pos[1])
                 self.spaxWidg2.resizeZoomBox(pos[0], pos[1])
             else:
                 sender.resizeZoomBox(pos[0], pos[1])
         
-        if self.inputCube.empty == False and (button == 1) and self.radioButtonModeSelect.isChecked()==True  and (not xdata==None) and (not ydata==None): 
-            if both == True:
+        if not self.inputCube.empty and (button == 1) and self.radioButtonModeSelect.isChecked()  and \
+                (xdata is not None) and (ydata is not None):
+            if both:
                 pass
-            elif sender == self.spaxWidg1 and self.inputCube.empty==False:
+            elif sender == self.spaxWidg1 and not self.inputCube.empty:
                 if not self.spaxWidg1.selectSpaxMask.isMasked((pos[1], pos[0])):
                     self.spaxWidg1.selectSpaxMask.maskPixel((pos[1],  pos[0])) 
                 spec = self.inputCube.extractSpecMask(self.spaxWidg1.selectSpaxMask.mask.mask, mode='sum')
                 self.specWidg.updateSpec1(self.inputCube.wave, spec1=spec)
             
-    def spaxFigMouseRelease(self,button,x,y,xdata,ydata):
+    def spaxFigMouseRelease(self, button, x, y, xdata, ydata):
         both = self.checkBoxModeBoth.isChecked()
         sender = self.sender()
-        if (button == 1) and self.radioButtonModeZoom.isChecked()==True:
+        if (button == 1) and self.radioButtonModeZoom.isChecked():
             limits = sender.getZoomLimit()
-            if both == True:
-                if limits!=None:
-                    self.spaxWidg1.axes.set_xlim(limits[0],limits[1])  
-                    self.spaxWidg1.axes.set_ylim(limits[2],limits[3]) 
+            if both:
+                if limits is not None:
+                    self.spaxWidg1.axes.set_xlim(limits[0], limits[1])
+                    self.spaxWidg1.axes.set_ylim(limits[2], limits[3])
                     self.spaxWidg1.delZoomBox()
-                    self.spaxWidg2.axes.set_xlim(limits[0],limits[1])  
-                    self.spaxWidg2.axes.set_ylim(limits[2],limits[3]) 
+                    self.spaxWidg2.axes.set_xlim(limits[0], limits[1])
+                    self.spaxWidg2.axes.set_ylim(limits[2], limits[3])
                     self.spaxWidg2.delZoomBox()
             else:
-                if limits!=None:
-                    sender.axes.set_xlim(limits[0],limits[1])  
-                    sender.axes.set_ylim(limits[2],limits[3]) 
+                if limits is not None:
+                    sender.axes.set_xlim(limits[0], limits[1])
+                    sender.axes.set_ylim(limits[2], limits[3])
                     sender.delZoomBox()
             
-        if (button == 3) and self.radioButtonModeZoom.isChecked()==True:
-            if both == True:
+        if (button == 3) and self.radioButtonModeZoom.isChecked():
+            if both:
                 self.spaxWidg1.zoomOut()
                 self.spaxWidg2.zoomOut()
             else:
                 sender.zoomOut()
             
-    def specFigMousePress(self,button,x,y,xdata,ydata):
-        if (not xdata==None) and (not ydata==None):
-            pos = self.getSpaxPos( xdata, ydata)
+    def specFigMousePress(self, button, x, y, xdata, ydata):
+        if (xdata is not None) and (ydata is not None):
+            pos = self.getSpaxPos(xdata, ydata)
         
-        if self.inputCube.empty == False and (button == 1) and self.radioButtonModeView.isChecked() and (not xdata==None) and (not ydata==None): 
+        if not self.inputCube.empty and (button == 1) and self.radioButtonModeView.isChecked() and \
+                (xdata is not None) and (ydata is not None):
             s = numpy.fabs(self.inputCube.wave-xdata)
             slice = numpy.argsort(s)[0]
             self.verticalSliderSlice.setValue(slice+1)
             
-        if self.inputCube.empty == False and (button == 1) and self.radioButtonModeZoom.isChecked()==True  and (not xdata==None) and (not ydata==None): 
+        if not self.inputCube.empty and (button == 1) and self.radioButtonModeZoom.isChecked() and \
+                (xdata is not None) and (ydata is not None):
             self.specWidg.initZoomBox(xdata, ydata)
         
-        if self.inputCube.empty == False and (button == 3) and self.radioButtonModeSelect.isChecked():
+        if not self.inputCube.empty and (button == 3) and self.radioButtonModeSelect.isChecked():
             self.specWidg.selectSpecMask.emptyRegion()
-         
             
-    def specFigMouseMove(self,button,x,y,xdata,ydata):
-            
-        if self.inputCube.empty == False and (button == 2) and self.radioButtonModeView.isChecked() and (not xdata==None) and (not ydata==None): 
-            s = numpy.fabs(self.inputCube.wave-xdata)
+    def specFigMouseMove(self,button, x, y, xdata, ydata):
+        if not self.inputCube.empty == False and (button == 2) and self.radioButtonModeView.isChecked() and \
+                (xdata is not None) and (ydata is not None):
+            s = numpy.fabs(self.inputCube.wave - xdata)
             slice = numpy.argsort(s)[0]
-            self.verticalSliderSlice.setValue(slice+1)
+            self.verticalSliderSlice.setValue(slice + 1)
             
-        if self.inputCube.empty == False and (button == 1) and self.radioButtonModeZoom.isChecked()==True  and (not xdata==None) and (not ydata==None):
+        if not self.inputCube.empty and (button == 1) and self.radioButtonModeZoom.isChecked()\
+                and (xdata is not None) and (ydata is not None):
             self.specWidg.resizeZoomBox(xdata,  ydata)
             
-        if self.inputCube.empty == False and (button == 1) and self.radioButtonModeSelect.isChecked()==True  and (not xdata==None) and (not ydata==None):
-            if self.specWidg.pickedSpecRegion[0]==True and not self.specWidg.pickedSpecRegion[1].waveLimit==None:
+        if not self.inputCube.empty and (button == 1) and self.radioButtonModeSelect.isChecked()==True and \
+                (xdata is not None) and (ydata is not None):
+            if self.specWidg.pickedSpecRegion[0] and self.specWidg.pickedSpecRegion[1].waveLimit is not None:
                 if self.specWidg.pickedSpecRegion[2] == 'left':
                     self.specWidg.pickedSpecRegion[1].setLimit([xdata, self.specWidg.pickedSpecRegion[1].waveLimit[1]])
                 else:
                     self.specWidg.pickedSpecRegion[1].setLimit([self.specWidg.pickedSpecRegion[1].waveLimit[0], xdata])
-            elif self.specWidg.changeSelectSpec==False:
+            elif not self.specWidg.changeSelectSpec:
                 self.specWidg.selectSpecMask.setLimit([xdata, xdata])   
                 self.specWidg.changeSelectSpec=True
             else:
                 limits = self.specWidg.selectSpecMask.Limit()
                 if xdata>=limits[0]:
-                    self.specWidg.selectSpecMask.setLimit([limits[0], xdata])   
-                    
+                    self.specWidg.selectSpecMask.setLimit([limits[0], xdata])
                 else:
                     self.specWidg.selectSpecMask.setLimit([xdata, limits[1]])   
             limits = self.specWidg.selectSpecMask.Limit()       
             img = self.inputCube.extractImage(limits[0], limits[1])
             self.spaxWidg1.updateImage(img)
-            
-            
-    def specFigMouseRelease(self,button,x,y,xdata,ydata):
-        if self.inputCube.empty == False and (button == 1) and self.radioButtonModeZoom.isChecked()==True:
+
+    def specFigMouseRelease(self, button, x, y, xdata, ydata):
+        if not self.inputCube.empty and (button == 1) and self.radioButtonModeZoom.isChecked():
             limits = self.specWidg.getZoomLimit()
-            if limits!=None:
-                self.specWidg.axes.set_xlim(limits[0],limits[1])  
-                self.specWidg.axes.set_ylim(limits[2],limits[3]) 
+            if limits is not None:
+                self.specWidg.axes.set_xlim(limits[0], limits[1])
+                self.specWidg.axes.set_ylim(limits[2], limits[3])
                 self.LWSpec.setLimits(limits[2], limits[3])
                 self.LWSpec.setManual()
                 self.specWidg.delZoomBox()
             
-        if self.inputCube.empty == False and (button == 3) and self.radioButtonModeZoom.isChecked()==True:
+        if not self.inputCube.empty and (button == 3) and self.radioButtonModeZoom.isChecked():
             self.specWidg.zoomOut()
             self.LWSpec.setAuto()
-          
         
-        if self.inputCube.empty == False and (button == 1) and self.radioButtonModeSelect.isChecked()==True:
+        if not self.inputCube.empty and (button == 1) and self.radioButtonModeSelect.isChecked():
             self.specWidg.changeSelectSpec=False
-          
-            
 
     def changedSlider(self, value):        
-        if self.inputCube.empty==False and self.radioButtonModeView.isChecked():
+        if not self.inputCube.empty and self.radioButtonModeView.isChecked():
             try:
                 self.cubeSlider.updateSlider(value)
-                self.spaxWidg1.updateImage(self.inputCube.dataCube[value-1,:,:])
-                if self.EELRcube.isEmpty()==False:
-                    self.spaxWidg2.updateImage(self.displayOutCube.dataCube[value-1,:,:], limits=False)
+                self.spaxWidg1.updateImage(self.inputCube.dataCube[value-1, :, :])
+                if not self.EELRcube.isEmpty():
+                    self.spaxWidg2.updateImage(self.displayOutCube.dataCube[value-1, :, :], limits=False)
                 self.specWidg.updateViewLine(self.inputCube.wave[value-1])
             except:
                 pass
-          
-    
+
     def changeOutCube(self):
         sender = self.sender()
         if sender == self.radioButtonHost:
@@ -490,7 +508,7 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         self.radioButtonModeSelect.setChecked(False)
         self.checkBoxModeBoth.setChecked(True)
         self.changedSlider(self.cubeSlider.slider.value())
-        self.spaxFigMousePress(1,None,None,self.spaxWidg1.showSpax[0][0]+0.5,self.spaxWidg1.showSpax[0][1]+0.5)
+        self.spaxFigMousePress(1, None, None, self.spaxWidg1.showSpax[0][0]+0.5, self.spaxWidg1.showSpax[0][1]+0.5)
         
     def changeMouseMode(self):
         sender = self.sender()
@@ -538,13 +556,11 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
             self.specWidg.viewLine.set_visible(False)
             self.cubeSlider.setEnabled(False)
             self.actionSetQSOcentre.setEnabled(False)
-            
 
     def setQSOcent(self):
         pos = self.spaxWidg1.showSpax
-        self.regionsSpaxWidg.setQSOCentManual([pos[0][1]+1,  pos[0][0]+1])
+        self.regionsSpaxWidg.setQSOCentManual([pos[0][1]+1, pos[0][0]+1])
         self.modeWidg.hostModel.setCenter([pos[0][1]+1,  pos[0][0]+1])
-        
             
     def toggleSelectMouse(self):
         self.radioButtonModeSelect.setChecked(True)
@@ -557,8 +573,6 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
         self.radioButtonModeZoom.setChecked(False)
         self.radioButtonModeSelect.setChecked(False)
         self.changeMouseMode()
-        
-        
         
     def startMonteCarlo(self):
         dialog = dlgMonteCarlo.dlgMonteCarlo(self, self.MonteSettings)
@@ -584,61 +598,61 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
                 cont2 =   self.regionsSpecWidg.regionCont2.getMask(self.inputCube.wave)
                 broad_region = [broad1, broad2]
                 cont_region = [cont1, cont2]
-            #print cont_region
             
             iter = self.modeWidg.boxIterations.value()
             mode = self.modeWidg.comboCorrMode.currentIndex()
             qso_mask = self.regionsSpaxWidg.getQSOMask()
             if mode==0:
-                eelr_mask=None
+                eelr_mask = None
                 iter = 1
-                factor=None
-                hostimage=None
+                factor = None
+                hostimage = None
             elif mode==1:
                 eelr_mask=self.regionsSpaxWidg.getEELRMask()
                 factor = None
-                hostimage=None
+                hostimage = None
             elif mode==2:
                 eelr_mask=self.regionsSpaxWidg.getEELRMask()
                 factor = float(self.lineEditSFBFactor.text())
-                hostimage=None
+                hostimage = None
             elif mode==3:
                 eelr_mask=self.regionsSpaxWidg.getEELRMask()
                 factor = None
                 hostmodel = self.modeWidg.hostModel.createHostModel()
-                if hostmodel[0]==True:
+                if hostmodel[0]:
                     hostimage = hostmodel[1]
                 else:
                     raise EmptyHostImage
             else:
-                factor=None
-            mode_region=str(self.comboBoxRegionMeasure.currentText())
+                factor = None
+            mode_region = str(self.comboBoxRegionMeasure.currentText())
             
-            if self.modeWidg.radioRadius.isChecked()==True:
+            if self.modeWidg.radioRadius.isChecked():
                 radius = float(self.modeWidg.boxRadius.text())
             else:
                 radius = None
-                
-#            outputCubes=[]
+
             if not iter==1:
                 progress = QProgressDialog('Perform Subtraction', '', 1, iter, parent=self)
                 progress.forceShow()
             else:
                 progress=None
             center = self.regionsSpaxWidg.centQSO
-            subtracted = self.inputCube.deblendQSOHost(center, qso_mask, broad_region, cont_region , iter, mode_region,  eelr_mask=eelr_mask, interpolate_cont=self.checkBoxInterpCont.isChecked(), subtract_region=None, radius=radius,  host_image=hostimage, factor=factor, showProgress=progress)
- #           dialog = progressMessage.progressMessage(self.inputCube, outputCubes, qso_mask, broad_region, cont_region , iter, mode_region,  eelr_mask=eelr_mask, interpolate_cont=self.checkBoxInterpCont.isChecked(), subtract_region=None, radius=radius,  host_image=hostimage, factor=factor, parent=self)
-#            dialog.show()
+            subtracted = self.inputCube.deblendQSOHost(center, qso_mask, broad_region, cont_region , iter, mode_region,
+                                                       eelr_mask=eelr_mask,
+                                                       interpolate_cont=self.checkBoxInterpCont.isChecked(),
+                                                       subtract_region=None, radius=radius,  host_image=hostimage,
+                                                       factor=factor, showProgress=progress)
             if self.EELRcube.isEmpty():
-                empty=1
+                empty = 1
             else:
-                empty=0
-                
+                empty = 0
+
             self.QSOcube = subtracted[1]
             self.EELRcube = subtracted[0]
             self.radioButtonHost.setEnabled(True)
             self.radioButtonQSO.setEnabled(True)
-            if self.radioButtonHost.isChecked() == True:
+            if self.radioButtonHost.isChecked():
                 self.displayOutCube = self.EELRcube
             else:
                 self.displayOutCube = self.QSOcube
@@ -646,16 +660,15 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
             self.actionSave_Results.setEnabled(True)
             slice = self.verticalSliderSlice.value()
             if empty==1:
-                self.spaxWidg2.initImage(self.displayOutCube.dataCube[slice-1,:,:], limits=True)       
+                self.spaxWidg2.initImage(self.displayOutCube.dataCube[slice-1, :, :], limits=True)
                 self.spaxWidg2.initShowSpax(0, 0, True)
-                self.specWidg.initSpec2(self.displayOutCube.wave,spec2=self.EELRcube.dataCube[:,0,0])
+                self.specWidg.initSpec2(self.displayOutCube.wave, spec2=self.EELRcube.dataCube[:, 0, 0])
                 self.specWidg.setXLim((self.inputCube.wave[0], self.inputCube.wave[-1]))
             else:
-                self.spaxWidg2.updateImage(self.displayOutCube.dataCube[slice-1,:,:], True)
+                self.spaxWidg2.updateImage(self.displayOutCube.dataCube[slice-1, :, :], True)
                 self.specWidg.updateSpec2(self.displayOutCube.wave,  spec2=self.EELRcube.dataCube[:,0, 0])
             self.changeOutCube()
             self.checkBoxModeBoth.setEnabled(True)
-            
         except UnfilledMaskError, error:
             warning = QMessageBox.critical(self,'Run-time Error', error.msg)
             
@@ -663,11 +676,13 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
             warning = QMessageBox.critical(self,'Run-time Error', error.msg)
         
     def setColourScheme(self):
-        dialog = dlgColorProperties.DlgColorProperties(self.specWidg.colorScheme, self.spaxWidg1.colorScheme, self.spaxWidg2.colorScheme, self.regionsSpaxWidg.colorScheme, self.regionsSpecWidg.colorScheme, parent=self)
+        dialog = dlgColorProperties.DlgColorProperties(self.specWidg.colorScheme, self.spaxWidg1.colorScheme,
+                                                       self.spaxWidg2.colorScheme, self.regionsSpaxWidg.colorScheme,
+                                                       self.regionsSpecWidg.colorScheme, parent=self)
         dialog.show()
         
     def onlineManual(self):
-        manualpath = os.path.join(os.path.dirname(__file__), "manual/html")
+        manualpath = os.path.join(os.path.dirname(__file__), "../../docs/html")
         form = onlineHelp.HelpForm(manualpath+"/index.html", self)
         form.show()
         
@@ -677,21 +692,13 @@ class MainWindow(QMainWindow,ui_mainwindow.Ui_MainWindow):
     def about(self):
         QMessageBox.about(self, 'Version', QString('''<b>QDeblend<sup>3D</sup> version:  %s</b><p>
         QDeblend<sup>3D</sup> is a dedicated Graphical User Interface to control and perform the deblending
-        of QSO and host galaxy emission in the 3D data of integral field spectrographs. <p>
+        of QSO and host galaxy emission for 3D data of integral field spectrographs. <p>
             
         QDeblend<sup>3D</sup> is free software: you can redistribute it and/or modify
-        it under the terms of the GNU General Public License  as published by
-        the Free Software Foundation, either version 3 of the License, or
-        any later version.
+        it under the terms of the MIT License.
         <p>
         QDeblend<sup>3D</sup> is distributed in the hope that it will be useful,
         but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        GNU General Public License for more details.
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
         <p>
-        You should have received a copy of the GNU General Public License
-        along with QDeblend<sup>3D</sup>.  If not, see <A HREF="http://www.gnu.org/licenses">http://www.gnu.org/licenses</A>.
-        <p>
-        Copyright (C) 2011 Bernd Husemann'''%(__version__)))
-        
-
+        Copyright (C) 2020 Bernd Husemann'''%(QDeblend.__version__)))
