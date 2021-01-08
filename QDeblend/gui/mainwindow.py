@@ -682,7 +682,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         dialog.show()
         
     def onlineManual(self):
-        manualpath = os.path.join(os.path.dirname(__file__), "../../docs/html")
+        manualpath = os.path.join(os.path.dirname(__file__), "../docs/html")
         form = onlineHelp.HelpForm(manualpath+"/index.html", self)
         form.show()
         

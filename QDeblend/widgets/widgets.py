@@ -2,6 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import QMessageBox
 from QDeblend.gui.dlgEditHostModel import hostContainer
 from QDeblend.gui import dlgHostModel
+from QDeblend.process import mask_def
 
 class limitWidget(QObject):
     def __init__(self, edit_min, edit_max, check_edit):
