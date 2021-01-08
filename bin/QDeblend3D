@@ -3,7 +3,15 @@
 from PyQt4.QtGui import QApplication
 from QDeblend.gui.mainwindow import MainWindow
 
-__version__ = '0.1.0'
+__author__ = "Bernd Husemann"
+__credit__ = ['Bernd Husemann']
+__copyright__ = "Copyright 2020, Bernd Husemann"
+__license__ = "MIT"
+__url__ = 'https://github.com/brandherd/QDeblend3D'
+__maintainer__ = "Bernd Husemann"
+__email__ = "berndhusemann@gmx.de"
+__status__ = "Beta"
+__version__ = "1.4.0b"
 
 def main():
     import sys
