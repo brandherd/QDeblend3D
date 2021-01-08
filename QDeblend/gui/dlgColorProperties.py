@@ -1,30 +1,10 @@
-# Copyright 2011 Bernd Husemann
-#
-#
-#This file is part of QDeblend3D.
-#
-#QDeblend3D is free software: you can redistribute it and/or modify
-#it under the terms of the GNU General Public License  as published by
-#the Free Software Foundation, either version 3 of the License, or
-#any later version.
-#
-#QDeblend3D  is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-#
-#You should have received a copy of the GNU General Public License
-#along with QDeblend3D.  If not, see <http://www.gnu.org/licenses/>.
-
 from QDeblend.ui import ui_dlgColorProperties
 import pickle
 import os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-__version__ = '0.1.2'
-
-class DlgColorProperties(QDialog,ui_dlgColorProperties.Ui_dlgColorProperties):
+class DlgColorProperties(QDialog, ui_dlgColorProperties.Ui_dlgColorProperties):
     def __init__(self, CPspec, CPspax, CPspax2, CPQSOspax, CPQSOspec, parent=None):
         super(DlgColorProperties,  self ).__init__(parent)
         self.setupUi(self)
@@ -64,9 +44,7 @@ class DlgColorProperties(QDialog,ui_dlgColorProperties.Ui_dlgColorProperties):
         
         self.comboBoxHSelect.setCurrentIndex(hatch_index(self.CPspec.select['hatch']))
         self.spinBoxASelect.setValue(self.CPspec.select['alpha'])
-        
-        
-        
+
         self.comboBoxMImage.setCurrentIndex(self.comboBoxMImage.findText(self.CPspax.image['colormap']))
         self.checkBoxRmapImage.setChecked(self.CPspax.image['reversed'])
         self.comboBoxIImage.setCurrentIndex(self.comboBoxIImage.findText(self.CPspax.image['interpolation']))
@@ -105,59 +83,68 @@ class DlgColorProperties(QDialog,ui_dlgColorProperties.Ui_dlgColorProperties):
         
         
     def apply(self):
-        spec1 = {'color':map_to_pylab(str(self.comboBoxCSpec1.currentText())), 'width':self.spinBoxWSpec1.value(), 'style':map_to_pylab(str(self.comboBoxSSpec1.currentText()))}
-        spec2 = {'color':map_to_pylab(str(self.comboBoxCSpec2.currentText())), 'width':self.spinBoxWSpec2.value(), 'style':map_to_pylab(str(self.comboBoxSSpec2.currentText()))}
-        slicer = {'color':map_to_pylab(str(self.comboBoxCSlicer.currentText())), 'width':self.spinBoxWSlicer.value(), 'style':map_to_pylab(str(self.comboBoxSSlicer.currentText()))}
-        zoom = {'color':map_to_pylab(str(self.comboBoxCZoom.currentText())), 'width':self.spinBoxWZoom.value(), 'style':map_to_pylab(str(self.comboBoxSZoom.currentText()))}        
-        select = {'color':map_to_pylab(str(self.comboBoxCSelect.currentText())), 'width':self.spinBoxWSelect.value(), 'style':map_to_pylab(str(self.comboBoxSSelect.currentText())), 'hatch':str(self.comboBoxHSelect.currentText()),'alpha':self.spinBoxASelect.value()}
-        if select['hatch']=='None':
-            select['hatch']=None
-        imag = {'colormap':str(self.comboBoxMImage.currentText()), 'reversed':self.checkBoxRmapImage.isChecked(), 'interpolation':str(self.comboBoxIImage.currentText()), 'radius':self.spinBoxRImage.value(),'scaling':str(self.comboBoxSImage.currentText())}
-        marker =  {'color':map_to_pylab(str(self.comboBoxCMarker.currentText())), 'width':self.spinBoxWMarker.value(), 'hatch':str(self.comboBoxHMarker.currentText()), 'alpha':self.spinBoxAMarker.value()}
-        spaxsel = {'color':map_to_pylab(str(self.comboBoxCSpaxSelect.currentText())), 'width':self.spinBoxWSpaxSelect.value(), 'hatch':str(self.comboBoxHSpaxSelect.currentText()), 'alpha':self.spinBoxASpaxSelect.value()}
+        spec1 = {'color':map_to_pylab(str(self.comboBoxCSpec1.currentText())), 'width':self.spinBoxWSpec1.value(),
+                 'style':map_to_pylab(str(self.comboBoxSSpec1.currentText()))}
+        spec2 = {'color':map_to_pylab(str(self.comboBoxCSpec2.currentText())), 'width':self.spinBoxWSpec2.value(),
+                 'style':map_to_pylab(str(self.comboBoxSSpec2.currentText()))}
+        slicer = {'color':map_to_pylab(str(self.comboBoxCSlicer.currentText())), 'width':self.spinBoxWSlicer.value(),
+                  'style':map_to_pylab(str(self.comboBoxSSlicer.currentText()))}
+        zoom = {'color':map_to_pylab(str(self.comboBoxCZoom.currentText())), 'width':self.spinBoxWZoom.value(),
+                'style':map_to_pylab(str(self.comboBoxSZoom.currentText()))}
+        select = {'color':map_to_pylab(str(self.comboBoxCSelect.currentText())), 'width':self.spinBoxWSelect.value(),
+                  'style':map_to_pylab(str(self.comboBoxSSelect.currentText())),
+                  'hatch':str(self.comboBoxHSelect.currentText()),'alpha':self.spinBoxASelect.value()}
+        if select['hatch'] is 'None':
+            select['hatch'] = None
+        imag = {'colormap':str(self.comboBoxMImage.currentText()), 'reversed':self.checkBoxRmapImage.isChecked(),
+                'interpolation':str(self.comboBoxIImage.currentText()), 'radius':self.spinBoxRImage.value(),
+                'scaling':str(self.comboBoxSImage.currentText())}
+        marker =  {'color':map_to_pylab(str(self.comboBoxCMarker.currentText())), 'width':self.spinBoxWMarker.value(),
+                   'hatch':str(self.comboBoxHMarker.currentText()), 'alpha':self.spinBoxAMarker.value()}
+        spaxsel = {'color':map_to_pylab(str(self.comboBoxCSpaxSelect.currentText())),
+                   'width':self.spinBoxWSpaxSelect.value(), 'hatch':str(self.comboBoxHSpaxSelect.currentText()),
+                   'alpha':self.spinBoxASpaxSelect.value()}
         
-        QSObroad =  {'color':map_to_pylab(str(self.comboBoxCQSObroad.currentText())), 'width':self.spinBoxWQSObroad.value(), 'hatch':str(self.comboBoxHQSObroad.currentText()), 'alpha':self.spinBoxAQSObroad.value()}
-        QSOcont =  {'color':map_to_pylab(str(self.comboBoxCQSOcont.currentText())), 'width':self.spinBoxWQSOcont.value(), 'hatch':str(self.comboBoxHQSOcont.currentText()), 'alpha':self.spinBoxAQSOcont.value()}
-        QSOSpax =  {'color':map_to_pylab(str(self.comboBoxCQSOSpax.currentText())), 'width':self.spinBoxWQSOSpax.value(), 'hatch':str(self.comboBoxHQSOSpax.currentText()), 'alpha':self.spinBoxAQSOSpax.value()}    
-        EELRSpax =  {'color':map_to_pylab(str(self.comboBoxCEELRSpax.currentText())), 'width':self.spinBoxWEELRSpax.value(), 'hatch':str(self.comboBoxHEELRSpax.currentText()), 'alpha':self.spinBoxAEELRSpax.value()}    
+        QSObroad =  {'color':map_to_pylab(str(self.comboBoxCQSObroad.currentText())),
+                     'width':self.spinBoxWQSObroad.value(), 'hatch':str(self.comboBoxHQSObroad.currentText()),
+                     'alpha':self.spinBoxAQSObroad.value()}
+        QSOcont =  {'color':map_to_pylab(str(self.comboBoxCQSOcont.currentText())),
+                    'width':self.spinBoxWQSOcont.value(), 'hatch':str(self.comboBoxHQSOcont.currentText()),
+                    'alpha':self.spinBoxAQSOcont.value()}
+        QSOSpax =  {'color':map_to_pylab(str(self.comboBoxCQSOSpax.currentText())),
+                    'width':self.spinBoxWQSOSpax.value(), 'hatch':str(self.comboBoxHQSOSpax.currentText()),
+                    'alpha':self.spinBoxAQSOSpax.value()}
+        EELRSpax =  {'color':map_to_pylab(str(self.comboBoxCEELRSpax.currentText())),
+                     'width':self.spinBoxWEELRSpax.value(), 'hatch':str(self.comboBoxHEELRSpax.currentText()),
+                     'alpha':self.spinBoxAEELRSpax.value()}
         self.CPspec.update(spec1, spec2, slicer, zoom, select)
         self.CPspax.update(imag, marker, spaxsel)
         self.CPspax2.update(imag, marker, spaxsel)
         self.CPQSOspec.update(broad=QSObroad, cont=QSOcont)
         self.CPQSOspax.update(QSO=QSOSpax, EELR=EELRSpax)
         self.accept()
-        
-    
+
     def saveSettings(self):
-        self.file_name = QFileDialog.getSaveFileName(self.parent, 
-    caption="Save Color Setting", directory=os.getcwd(), filter="Settings (*.cf)")
-        try:
-            pickle_objects = [self.CPspec.__dict__, self.CPspax.__dict__, self.CPQSOspec.__dict__, self.CPQSOspax.__dict__]
-            file = open(file_name[0], 'w')
-            pickle.dump(pickle_objects, file)
-            file.close()
-        except:
-            pass
+        self.file_name = QFileDialog.getSaveFileName(self.parent, caption="Save Color Setting", directory=os.getcwd(),
+                                                     filter="Settings (*.cf)")
+        pickle_objects = [self.CPspec.__dict__, self.CPspax.__dict__, self.CPQSOspec.__dict__,
+                              self.CPQSOspax.__dict__]
+        file = open(file_name[0], 'w')
+        pickle.dump(pickle_objects, file)
+        file.close()
             
     def loadSettings(self):
-        
-        self.file_name = QFileDialog.getOpenFileName(self.parent,
-     caption="Open Color Setting", directory=os.getcwd(), filter="Settings (*.cf)")
-        try:
-            file = open(file_name, 'r')
-            list = pickle.load(file)
-            file.close()
-            self.CPspec.update(list[0]['spec1'], list[0]['spec2'], list[0]['slicer'], list[0]['zoom'], list[0]['select'])
-            self.CPspax.update(list[1]['image'], llist[1]['marker'], list[1]['select'])
+        self.file_name = QFileDialog.getOpenFileName(self.parent, caption="Open Color Setting", directory=os.getcwd(),
+                                                     filter="Settings (*.cf)")
+        file = open(file_name, 'r')
+        list = pickle.load(file)
+        file.close()
+        self.CPspec.update(list[0]['spec1'], list[0]['spec2'], list[0]['slicer'], list[0]['zoom'], list[0]['select'])
+        self.CPspax.update(list[1]['image'], llist[1]['marker'], list[1]['select'])
             
-            self.CPspax2.update(list[1]['image'], list[1]['marker'], list[1]['select'])
-            self.CPQSOspax.update(list[2]['QSO'], list[2]['EELR'])
-            self.CPQSOspex.update(list[3]['broad'], list[e]['cont'])
-    
-        except:
-            pass
-            
-        
+        self.CPspax2.update(list[1]['image'], list[1]['marker'], list[1]['select'])
+        self.CPQSOspax.update(list[2]['QSO'], list[2]['EELR'])
+        self.CPQSOspex.update(list[3]['broad'], list[e]['cont'])
     
     def restore(self):
         self.CPspec.default_values()
@@ -166,16 +153,15 @@ class DlgColorProperties(QDialog,ui_dlgColorProperties.Ui_dlgColorProperties):
         self.CPQSOspec.default_values()
         self.CPQSOspax.default_values()
         self.updateForm()
-        
-        
+
 def map_to_pylab(input):
-    trans = {'black':'k', 'blue':'b', 'red':'r', 'green':'g', 'yellow':'y', 'magenta':'m', 
-    'solid':'-', 'dashed':'--', 'dotted':':', 'dash-dot':'-.','points':'.', 'circles':'o'}
+    trans = {'black':'k', 'blue':'b', 'red':'r', 'green':'g', 'yellow':'y', 'magenta':'m', 'solid':'-', 'dashed':'--',
+             'dotted':':', 'dash-dot':'-.','points':'.', 'circles':'o'}
     return trans[input]
     
 def map_from_pylab(input):
-    trans = {'k':'black', 'b':'blue', 'r':'red', 'g':'green', 'y':'yellow', 'm':'magenta', 
-    '-':'solid', '--':'dashed', ':':'dotted', '-.':'dash-dot','.':'points', 'o':'circles'}
+    trans = {'k':'black', 'b':'blue', 'r':'red', 'g':'green', 'y':'yellow', 'm':'magenta', '-':'solid', '--':'dashed',
+             ':':'dotted', '-.':'dash-dot','.':'points', 'o':'circles'}
     return trans[input]
     
 def color_index(item):

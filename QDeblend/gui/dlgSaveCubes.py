@@ -3,9 +3,6 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from QDeblend.ui import ui_dlgSaveCubes
 
-__version__='0.1.2'
-
-
 class dlgSaveCubes(QDialog, ui_dlgSaveCubes.Ui_dlgSaveCubes):
     def __init__(self, QSOcube,  EELRcube, parent=None):
         super(dlgSaveCubes,  self ).__init__(parent)
