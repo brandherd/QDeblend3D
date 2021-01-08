@@ -15,9 +15,9 @@ Hence, particular care needs to be taken for the dependencies. We strongly recom
 python environment system to create the right environment to run QDeblend3D. The steps are the following:
 
 1. download QDeblend3D from github.com/brandherd/QDeblend3d
-2. create a dedicated conda environmet by calling `bash QDeblend_conda.sh`
+2. create a dedicated conda environmet by calling `source QDeblend_conda.sh`
 3. change the environment with `conda activate QDeb`
-4. run `pip install` or `python setup.py install` to install QDeblend3D into the environment
+4. run `pip install .` or `python setup.py install` to install QDeblend3D into the environment
 5. change into the example directory and call `QDeblend3D HE0949-0122.final.fits.gz 
    
 QDeblend3D is sucessfully installed when the GUI opens.
