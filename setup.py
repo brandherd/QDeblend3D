@@ -2,7 +2,7 @@
 import setuptools
 
 setuptools(name='QDeblend3D',
-      version='1.4.0b',
+      version='1.4.0',
       description="""Graphical User Interface for visualzing astronomical optical/NIR IFU datacubes and subtracting 
                   point-like unobscured AGN contributions from the data. 
                   """,
@@ -21,4 +21,6 @@ setuptools(name='QDeblend3D',
       url='http://github.com/brandherd/QDeblend3D',
       install_requires=['astropy==1.3.3','numpy==1.11.3','astropy==1.3.3','matplotlib==1.5.3','pyqt==4.11.4'],
       python_requires='>=2.7, <3.0',
-      scripts=['bin/QDeblend'])
+      scripts=['bin/QDeblend'],
+      package_dir={'QDeblend': 'QDeblend'},
+      package_data={'QDeblend': ['docs/*.pdf','docs/html/*'])
