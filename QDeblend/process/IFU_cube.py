@@ -1,8 +1,7 @@
 import numpy
-import math
 from astropy.io import fits as pyfits
 from scipy import ndimage
-from QDeblend.process.own_exceptions import *
+from QDeblend.process.exceptions import IFUcubeIOError
 
 
 class IFUcube(object):
@@ -82,7 +81,7 @@ class IFUcube(object):
                         raise IFUcubeIOError("The Frame is not an IFU cube!")
 
                 ### Reading corresponding variance frame when given
-                if nname_var is not None:
+                if name_var is not None:
                     fits = pyfits.open(name_var)
                     var = fits[hdu].data
                     dim_var = var.shape
@@ -264,10 +263,11 @@ class IFUcube(object):
         else:
             radius_mask = numpy.ones((self.yDim, self.xDim), dtype=int)
         qso_spec_0 = self.extractSpecMask(qso_mask, mode='mean')   
-        if factor is not None and host_image is not None:
+        if factor is None and host_image is None:
             scale_eelr  = 1.0
         elif factor is not None:
-            scale_eelr=factor
+            scale_eelr = factor
+
         for i in range(iter):
             if showProgress is not None:
                 abort = showProgress.wasCanceled()
@@ -288,7 +288,7 @@ class IFUcube(object):
                         eelr_region = numpy.sum(host_smoothed[eelr_mask].flatten()) / (numpy.sum(eelr_mask))
                         scale_eelr = qso_region / eelr_region
     
-                    if eelr_maskis not None:
+                    if eelr_mask is not None:
                         eelr_spec = EELR_cube_temp.extractSpecMask(eelr_mask, mode='mean')
                         spec = qso_spec_0 - eelr_spec * scale_eelr
                     else:

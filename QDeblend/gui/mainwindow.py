@@ -1,9 +1,7 @@
-import sys
 import os
 import pickle
 import numpy
 import math
-from astropy.io import fits as pyfits
 import matplotlib
 matplotlib.use('Qt4Agg')
 from QDeblend.process import IFU_cube
@@ -17,6 +15,8 @@ import dlgSaveCubes
 import dlgMonteCarlo
 import onlineHelp
 import QDeblend
+from QDeblend.process.exceptions import EmptyHostImage
+from QDeblend.process.exceptions import UnfilledMaskError
 
 __author__ = "Bernd Husemann"
 __credit__ = ['Bernd Husemann']
@@ -27,7 +27,6 @@ __maintainer__ = "Bernd Husemann"
 __email__ = "berndhusemann@gmx.de"
 __status__ = "Production"
 __version__ = QDeblend.__version__
-
 
 
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
@@ -65,11 +64,10 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         ....
     """
 
-    
     def __init__(self, parent=None, file=''):
-        super(MainWindow, self ).__init__(parent)
+        super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.cubeinname=''
+        self.cubeinname = ''
         self.inputCube = IFU_cube.IFUcube()
         self.EELRcube = IFU_cube.IFUcube()
         self.QSOcube = IFU_cube.IFUcube()
@@ -146,7 +144,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.connect(self.actionAboutQt, SIGNAL("triggered()"), self.aboutQt)
         self.connect(self.actionAbout, SIGNAL("triggered()"), self.about)
         
-        if file!='':
+        if file != '':
             if '.fits' in file or '.fit' in file or '.fits.gz' in file:
                 self.OpenFile(file)
             elif '.q3d' in file:
@@ -155,12 +153,12 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
                 raise IOError('No correct file selected for import. Please review your selection.')
         
     def OpenFile(self, filename=''):
-        if filename=='':
+        if filename == '':
             self.cubeinname = QFileDialog.getOpenFileName(self, caption="Open IFU Cube", directory=os.getcwd(),
                                                           filter="Fits Files (*.fit *.fits *fits.gz)")
         else:
-            self.cubeinname=filename
-        if self.cubeinname!='':
+            self.cubeinname = filename
+        if self.cubeinname != '':
             try:
                 ## Load Cube
                 self.inputCube.loadFitsCube(str(self.cubeinname))

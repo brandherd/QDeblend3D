@@ -1,6 +1,8 @@
 from QDeblend.ui import ui_dlgEditHostModel
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import numpy
+from QDeblend.process import host_profiles
 
 class hostModel(object):
     def __init__(self, mag, x, y, re, sersic, e, theta):
@@ -129,12 +131,12 @@ class DlgEditHostModel(QDialog, ui_dlgEditHostModel.Ui_dlgEditHostModel):
         self.connect(self.buttonBox.button(QDialogButtonBox.Cancel), SIGNAL("clicked()"), self.reject)
             
     def updateModel(self):
-        hostModel = hostModel(self.dMag.value(), self.dDeltax.value(), self.dDeltay.value(), self.dEffRadius.value(),
+        model = hostModel(self.dMag.value(), self.dDeltax.value(), self.dDeltay.value(), self.dEffRadius.value(),
                               self.dSersic.value(), self.dElip.value(), self.dPA.value())
         if self.mode=='add':
-            self.hostContainer.add(hostModel)
+            self.hostContainer.add(model)
         if self.mode=='change':
-            self.hostContainer.updateSelected(hostModel)
+            self.hostContainer.updateSelected(model)
         self.parent.updateTable()
         self.parent.updateImag()
         self.accept()

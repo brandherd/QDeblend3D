@@ -1,25 +1,6 @@
-# Copyright 2011 Bernd Husemann
-#
-#
-#This file is part of QDeblend3D.
-#
-#QDeblend3D is free software: you can redistribute it and/or modify
-#it under the terms of the GNU General Public License  as published by
-#the Free Software Foundation, either version 3 of the License, or
-#any later version.
-#
-#QDeblend3D  is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-#
-#You should have received a copy of the GNU General Public License
-#along with QDeblend3D.  If not, see <http://www.gnu.org/licenses/>.
-
 import numpy
 import matplotlib
-from QDeblend.process.own_exceptions import *
-from PyQt4.QtCore import *
+from QDeblend.process.exceptions import UnfilledMaskError
 
 class mask(object):
     def __init__(self,dim,init_mask_array=None):
@@ -43,14 +24,14 @@ class mask(object):
     def maskBox(self, center, boxsize):
         if (boxsize-1)%2 == 0 and center[0]-(boxsize-1)//2>=0 and center[0]+(boxsize-1)//2+1<=self.dim[0] and \
                 center[1]-(boxsize-1)//2>=0 and center[1]+(boxsize-1)//2+1<=self.dim[1]:
-            self.mask[center[0]-(boxsize-1)//2:center[0]+(boxsize-1)//2+1,
-            center[1]-(boxsize-1)//2:center[1]+(boxsize-1)//2+1] = True
+            self.mask[int(center[0]-(boxsize-1)//2):int(center[0]+(boxsize-1)//2+1),
+            int(center[1]-(boxsize-1)//2):int(center[1]+(boxsize-1)//2+1)] = True
     
     def unmaskBox(self, center, boxsize):
         if (boxsize-1)%2 == 0 and center[0]-(boxsize-1)//2>=0 and center[0]+(boxsize-1)//2+1<=self.dim[0] and \
                 center[1]-(boxsize-1)//2>=0 and center[1]+(boxsize-1)//2+1<=self.dim[1]:
-            self.mask[center[0]-(boxsize-1)//2:center[0]+(boxsize-1)//2+1,
-            center[1]-(boxsize-1)//2:center[1]+(boxsize-1)//2+1] = False
+            self.mask[int(center[0]-(boxsize-1)//2):int(center[0]+(boxsize-1)//2+1),
+            int(center[1]-(boxsize-1)//2):int(center[1]+(boxsize-1)//2+1)] = False
     
     def maskShell(self, center, boxsize, width):
         self.maskBox( center, boxsize + 2 * width)
@@ -267,10 +248,10 @@ class displaySpecRegion(object):
                 self.canvas.fig.canvas.draw()
                 if picker:
                     self.cid = self.canvas.fig.canvas.mpl_connect('pick_event', self.onpick)
-                else:
-                    self.area = None
-                    self.left = None
-                    self.right = None
+            else:
+                self.area = None
+                self.left = None
+                self.right = None
     
     def setLimit(self, waveLimit):
         if waveLimit is not None:

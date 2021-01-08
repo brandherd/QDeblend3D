@@ -1,5 +1,5 @@
 from PyQt4.QtCore import QObject
-
+from PyQt4.QtCore import SIGNAL
 
 class colorSchemeSpec(QObject):
     def __init__(self):

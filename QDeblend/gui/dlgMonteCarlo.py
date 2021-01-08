@@ -1,9 +1,9 @@
 import os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from QDeblend.process.own_exceptions import *
+from QDeblend.process.exceptions import *
 from QDeblend.ui import ui_dlgMonteCarlo
-import dlgEditHostModel
+
 
 class setMonteCarlo(object):
     def __init__(self, dir='', var_name='', prefix='', simulations=0, width_random=0.0, wavelength_start=None,

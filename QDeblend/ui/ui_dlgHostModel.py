@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from QDeblend.widgets.matplotlibimgwidget import MatplotlibImgWidget
 
 class Ui_dlgHostModel(object):
     def setupUi(self, dlgHostModel):
