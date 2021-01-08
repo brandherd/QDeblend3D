@@ -6,4 +6,4 @@ __url__ = 'https://github.com/brandherd/QDeblend3D'
 __maintainer__ = "Bernd Husemann"
 __email__ = "berndhusemann@gmx.de"
 __status__ = "Beta"
-__version__ = "1.4.0b"
+__version__ = "1.4.0"
